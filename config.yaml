@@ -1,0 +1,91 @@
+web_service:
+    jwt_secret: 'Xaw18seQR09'
+    mongodb_uri: 'mongodb://test:test@ds119772.mlab.com:19772/cs503-tap-news'
+backend_service:
+    host: '127.0.0.1'
+    port: 4040
+    news_limit: 100
+    news_list_batch_size: 10
+    user_news_timeout_in_seconds: 600
+    log_file_path: '/var/log/coconut_news/backend_service.log'
+redis:
+    host: 'ec2-54-88-54-128.compute-1.amazonaws.com'
+    port: 6379
+mongodb:
+    host: 'ec2-54-161-35-152.compute-1.amazonaws.com'
+    port: 27017
+    db_name: 'coconut_news'
+    news_table_name: 'news'
+    click_logs_table_name: 'click_logs'
+    preference_model_table_name: 'user_preference_model'
+message_queue:
+    scrape_news_task_queue_name: 'coconut_news_scrape_news_task_queue'
+    scrape_news_task_queue_url: 'amqp://elkeiyay:toRc-yZ3LuVtM3F7fh8YuCSGOSm9FQjc@fish.rmq.cloudamqp.com/elkeiyay'
+    dedupe_news_task_queue_name: 'coconut_news_dedupe_news_task_queue'
+    dedupe_news_task_queue_url: 'amqp://sfedgxjp:bkIrYEf2xFEdGfFv0w8Lu_HfvCFVFkDp@crocodile.rmq.cloudamqp.com/sfedgxjp'
+    click_logs_task_queue_name: 'coconut_news_click_logs_task_queue'
+    click_logs_task_queue_url: 'amqp://rajzbecm:cYkZR9lmRKDm0MvcJVb_vzehxa14pzSN@fish.rmq.cloudamqp.com/rajzbecm'
+news_pipeline:
+    news_monitor:
+        news_sources:
+            - 'bbc-news'
+            - 'bbc-sport'
+            - 'bloomberg'
+            - 'cnn'
+            - 'entertainment-weekly'
+            - 'espn'
+            - 'ign'
+            - 'techcrunch'
+            - 'the-new-york-times'
+            - 'the-wall-street-journal'
+            - 'the-washington-post'
+        news_timeout_in_seconds: 86400  # 60 * 60 * 24 * 1
+        sleep_time_in_seconds: 10
+        log_file_path: '/var/log/coconut_news/news_monitor.log'
+    news_fetcher:
+        sleep_time_in_seconds: 5
+        log_file_path: '/var/log/coconut_news/news_fetcher.log'
+    news_deduper:
+        sleep_time_in_seconds: 1
+        same_news_similarity_threshold: 0.9
+        log_file_path: '/var/log/coconut_news/news_deduper.log'
+news_api:
+    key: 'f69aae8e056d4c3e9ed442fd89a922e9'
+    endpoint: 'https://newsapi.org/v1/'
+    articals_api_name: 'articles'
+    sort_by_top: 'top'
+news_recommendation_service:
+    host: '127.0.0.1'
+    port: 5050
+    log_file_path: '/var/log/coconut_news/news_recommendation_service.log'
+    click_logs_processor:
+        sleep_time_in_seconds: 1
+        alpha: 1.0
+        log_file_path: '/var/log/coconut_news/click_logs_processor.log'
+news_topic_modeling_service:
+    host: '127.0.0.1'
+    port: 6060
+    log_file_path: '/var/log/coconut_news/news_topic_modeling_service.log'
+news:
+    number_of_classes: 17
+    classes:
+        - 'Colleges & Schools'
+        - 'Environmental'
+        - 'World'
+        - 'Entertainment'
+        - 'Media'
+        - 'Politics & Government'
+        - 'Regional News'
+        - 'Religion'
+        - 'Sports'
+        - 'Technology'
+        - 'Traffic'
+        - 'Weather'
+        - 'Economic & Corp'
+        - 'Advertisements'
+        - 'Crime'
+        - 'Other'
+        - 'Magazine'
+statsd:
+    host: 'ec2-34-229-14-252.compute-1.amazonaws.com'
+    port: 8125
